@@ -3,7 +3,9 @@ import { useState } from "react";
 import { useRef } from 'react';
 
 function App() {
-  const [hidden, showBlock] = useState(false);
+  const hiddenBlocks = useRef(0)
+  const [isHidden, hideBlock] = useState(true)
+  const [isHiddenTxt, hideText] = useState(false)
   const newList = [];
   const checkedIds = new Set();
 
@@ -30,17 +32,13 @@ function App() {
   };
 
   const changeItem = (id) => {
-    if(hidden != true){
-      showBlock(true)
+    if(isHidden){
+      hideBlock(false)
+      hideText(true)
     }else{
-      showBlock(false)
+      hideBlock(true)
+      hideText(false)
     }
-    console.log(hidden)
-    if(hidden == true){
-      
-    }
-   
-
   };
 
   const cbox = (id, e) => {
@@ -58,10 +56,10 @@ function App() {
       {list.map((item, index) => (
         <>
           <div>
-            <span key={"name" + index} id={"input" + item.id}>
+            <span  hidden={isHiddenTxt} key={"name" + index} id={"input" + item.id}>
               {item.name} 
             </span>
-             <input hidden
+             <input hidden={isHidden}
                 type="text"
                 name={"text" + index}
                 onChange={() => console.log(event.target.value)}
