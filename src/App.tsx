@@ -43,12 +43,14 @@ function App() {
   };
 
   const cbox = (id, e) => {
-    let obj = undefined
+    let obj = ""
+    console.log("objekt mit ausgewählter id: ", id)
     isSelected(() => {
       obj = list.find((item) => item.id === id);
       return obj;
     });
     console.log(selectedObj);
+    if(!selectedObj){ return}
     if (e.checked && !checkedIds.has(id)) {
       checkedIds.add(id);
       selectedObj.isChecked = true
