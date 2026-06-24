@@ -4,14 +4,17 @@ import { useState } from "react";
 function App() {
   const [isHidden, hideBlock] = useState(true);
   const [isHiddenTxt, hideText] = useState(false);
+  const checked = new Set();
   const checkedIds = new Set();
+  let [selectedObj, isSelected] = useState(null);
 
-  let [list, addVal] = useState([
+  const [list, addVal] = useState([
     {
       id: 1,
       name: "nina",
+      isChecked: false,
     },
-    { id: 2, name: "max" },
+    { id: 2, name: "max", isChecked: false },
   ]);
 
   const deleteList = () => {
@@ -22,11 +25,11 @@ function App() {
     //     newList.push(obj);
     //   }
     // });
-
     console.log("checkedid: ", checkedIds);
     console.log("gefilterte liste: ", list);
     addVal(list);
     console.log("endliste: ", list);
+
     // idsToDelete.clear()
   };
 
@@ -41,13 +44,24 @@ function App() {
   };
 
   const cbox = (id, e) => {
+    list.forEach((obj) => {
+      if (obj.id == id) {
+        isSelected(obj)
+      }
+    });
+    console.log(selectedObj)
     if (e && !checkedIds.has(id)) {
       checkedIds.add(id);
+      e.checked = true;
+      isSelected()
     }
     if (!e && checkedIds.has(id)) {
       checkedIds.delete(id);
+      e.checked = false;
+      selectedObj.isChecked = e.checked;
     }
     console.log(checkedIds);
+
   };
 
   return (
@@ -67,9 +81,9 @@ function App() {
             <div>
               <input
                 type="checkbox"
+                checked={item.isChecked}
                 name={"chbx" + index}
-                
-                onChange={(event) => cbox(item.id, event.target.checked)}
+                onChange={(e) => cbox(item.id, e.target)}
               />
               <button type="button" onClick={(e) => changeItem(item.id)}>
                 edit
