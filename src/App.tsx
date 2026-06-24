@@ -16,7 +16,6 @@ function App() {
     },
     { id: 2, name: "max", isChecked: false },
   ]);
-
   const deleteList = () => {
     const idsToDelete = new Set(checkedIds);
     list = list.filter((item) => !idsToDelete.has(item.id));
@@ -44,53 +43,52 @@ function App() {
   };
 
   const cbox = (id, e) => {
-    list.forEach((obj) => {
-      if (obj.id == id) {
-        isSelected(obj)
-      }
+
+    isSelected(() => {
+      let obj = list.find((item) => item.id === id);
+      return obj;
     });
-    console.log(selectedObj)
+    console.log(selectedObj);
     if (e && !checkedIds.has(id)) {
       checkedIds.add(id);
       e.checked = true;
-      isSelected()
     }
     if (!e && checkedIds.has(id)) {
       checkedIds.delete(id);
       e.checked = false;
-      selectedObj.isChecked = e.checked;
     }
     console.log(checkedIds);
-
   };
 
   return (
     <div>
       {list.map((item, index) => (
-        <>
-          <div>
-            <span
-              hidden={isHiddenTxt}
-              key={"name" + index}
-              id={"input" + item.id}
-            >
-              {item.name}
-            </span>
-            <input hidden={isHidden} type="text" name={"text" + index} />
-
+        <div key={index}>
+          <>
             <div>
-              <input
-                type="checkbox"
-                checked={item.isChecked}
-                name={"chbx" + index}
-                onChange={(e) => cbox(item.id, e.target)}
-              />
-              <button type="button" onClick={(e) => changeItem(item.id)}>
-                edit
-              </button>
+              <span
+                hidden={isHiddenTxt}
+                key={"name" + index}
+                id={"input" + item.id}
+              >
+                {item.name}
+              </span>
+              <input hidden={isHidden} type="text" name={"text" + index} />
+
+              <div>
+                <input
+                  type="checkbox"
+                  checked={item.isChecked}
+                  name={"chbx" + index}
+                  onChange={(e) => cbox(item.id, e.target)}
+                />
+                <button type="button" onClick={(e) => changeItem(item.id)}>
+                  edit
+                </button>
+              </div>
             </div>
-          </div>
-        </>
+          </>
+        </div>
       ))}
       <button onClick={deleteList}>delete</button>
     </div>
