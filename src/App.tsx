@@ -43,19 +43,19 @@ function App() {
   };
 
   const cbox = (id, e) => {
-
+    let obj = undefined
     isSelected(() => {
-      let obj = list.find((item) => item.id === id);
+      obj = list.find((item) => item.id === id);
       return obj;
     });
     console.log(selectedObj);
-    if (e && !checkedIds.has(id)) {
+    if (e.checked && !checkedIds.has(id)) {
       checkedIds.add(id);
-      e.checked = true;
+      selectedObj.isChecked = true
     }
-    if (!e && checkedIds.has(id)) {
+    if (!e.checked && checkedIds.has(id)) {
       checkedIds.delete(id);
-      e.checked = false;
+      selectedObj.isChecked = false
     }
     console.log(checkedIds);
   };
