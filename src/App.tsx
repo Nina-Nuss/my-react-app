@@ -1,9 +1,13 @@
 import "./App.css";
 import { useState } from "react";
+import { useRef } from 'react';
 
 function App() {
-  const listids = [];
+  const [hidden, showBlock] = useState(false);
   const newList = [];
+  const checkedIds = new Set();
+
+
   const [list, addVal] = useState([
     {
       id: 1,
@@ -13,10 +17,10 @@ function App() {
   ]);
 
   const deleteList = () => {
-    const newList = list.filter((obj) => !listids.includes(obj.id));
-
+    const idsToDelete = new Set(checkedIds);
+    const newList = list.filter((item) => !idsToDelete.has(item.id));
     // list.forEach((obj) => {
-    //   if (listids.includes(obj.id)) {
+    //   if (idsToDelete.includes(obj.id)) {
     //     newList.push(obj);
     //   }
     // });
@@ -25,8 +29,28 @@ function App() {
     addVal(newList);
   };
 
-  const cbox = (id) => {
-    listids.push(id);
+  const changeItem = (id) => {
+    if(hidden != true){
+      showBlock(true)
+    }else{
+      showBlock(false)
+    }
+    console.log(hidden)
+    if(hidden == true){
+      
+    }
+   
+
+  };
+
+  const cbox = (id, e) => {
+    if (e) {
+      checkedIds.add(id);
+    } else {
+      if (!e && checkedIds.has(id)) {
+        checkedIds.delete(id);
+      }
+    }
   };
 
   return (
@@ -34,12 +58,25 @@ function App() {
       {list.map((item, index) => (
         <>
           <div>
-            <span key={"name" + index}>{item.name}</span>
-            <input
-              type="checkbox"
-              name={"chbx" + index}
-              onClick={() => cbox(item.id)}
-            />
+            <span key={"name" + index} id={"input" + item.id}>
+              {item.name} 
+            </span>
+             <input hidden
+                type="text"
+                name={"text" + index}
+                onChange={() => console.log(event.target.value)}
+              />
+
+            <div>
+              <input
+                type="checkbox"
+                name={"chbx" + index}
+                onClick={(event) => cbox(item.id, event.target.checked)}
+              />
+              <button type="button" onClick={(event) => changeItem(item.id)}>
+                edit
+              </button>
+            </div>
           </div>
         </>
       ))}
