@@ -6,9 +6,10 @@ function App() {
   const [isHiddenTxt, hideText] = useState(false);
   const checked = new Set();
   const checkedIds = new Set();
-  let [selectedObj, isSelected] = useState(null);
+  let [selectedObj, isSelected] = useState();
+  let obj = "";
 
-  const [list, addVal] = useState([
+  let [list, addVal] = useState([
     {
       id: 1,
       name: "nina",
@@ -43,22 +44,22 @@ function App() {
   };
 
   const cbox = (id, e) => {
-    let obj = ""
-    console.log("objekt mit ausgewählter id: ", id)
+    console.log("objekt mit ausgewählter id: ", id);
     isSelected(() => {
       obj = list.find((item) => item.id === id);
       return obj;
     });
-    console.log(selectedObj);
-    if(!selectedObj){ return}
+
+    if (!selectedObj) {
+      return;
+    }
     if (e.checked && !checkedIds.has(id)) {
       checkedIds.add(id);
-      selectedObj.isChecked = true
     }
     if (!e.checked && checkedIds.has(id)) {
       checkedIds.delete(id);
-      selectedObj.isChecked = false
     }
+    console.log(selectedObj);
     console.log(checkedIds);
   };
 
@@ -80,7 +81,6 @@ function App() {
               <div>
                 <input
                   type="checkbox"
-                  checked={item.isChecked}
                   name={"chbx" + index}
                   onChange={(e) => cbox(item.id, e.target)}
                 />
